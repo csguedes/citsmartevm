@@ -1,0 +1,67 @@
+package org.jbpm.runtime.manager.util;
+
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.FilenameFilter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import bitronix.tm.resource.jdbc.PoolingDataSource;
+
+public class TestUtil {
+    
+    private static final Logger logger = LoggerFactory.getLogger(TestUtil.class);
+
+    public static PoolingDataSource setupPoolingDataSource() {
+        PoolingDataSource pds = new PoolingDataSource();
+        pds.setUniqueName("jdbc/jbpm-ds");
+        pds.setClassName("bitronix.tm.resource.jdbc.lrc.LrcXADataSource");
+        pds.setMaxPoolSize(50);
+        pds.setAllowLocalTransactions(true);
+        pds.getDriverProperties().put("user", "sa");
+        pds.getDriverProperties().put("password", "");
+        pds.getDriverProperties().put("url", "jdbc:h2:mem:test;MVCC=true");
+        pds.getDriverProperties().put("driverClassName", "org.h2.Driver");
+        pds.init();
+        return pds;
+    }
+    
+    public static void cleanupSingletonSessionId() {
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        if (tempDir.exists()) {
+            
+            String[] jbpmSerFiles = tempDir.list(new FilenameFilter() {
+                
+                @Override
+                public boolean accept(File dir, String name) {
+                    
+                    return name.endsWith("-jbpmSessionId.ser");
+                }
+            });
+            for (String file : jbpmSerFiles) {
+                logger.debug("Temp dir to be removed {} file {}",tempDir, file);
+                new File(tempDir, file).delete();
+            }
+        }
+    }
+    
+    public static void main(String[] args) {
+        cleanupSingletonSessionId();
+    }
+    
+    public static void checkDisposedSessionException(Throwable e) {
+        Throwable rootCause = e.getCause();
+        while (rootCause != null) {
+            if (rootCause.getCause() != null){
+                rootCause = rootCause.getCause();
+            } else {
+                break;
+            }
+        }
+        if (!(rootCause instanceof IllegalStateException)){
+            fail("Unexpected exception caught " + rootCause.getMessage());
+        }
+    }
+}
