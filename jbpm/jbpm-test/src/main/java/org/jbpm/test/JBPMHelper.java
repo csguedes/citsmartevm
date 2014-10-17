@@ -83,9 +83,9 @@ public final class JBPMHelper {
         pds.setClassName("bitronix.tm.resource.jdbc.lrc.LrcXADataSource");
         pds.setMaxPoolSize(5);
         pds.setAllowLocalTransactions(true);
-        pds.getDriverProperties().put("user", properties.getProperty("persistence.datasource.user", "root"));
-        pds.getDriverProperties().put("password", properties.getProperty("persistence.datasource.password", ""));
-        pds.getDriverProperties().put("url", properties.getProperty("persistence.datasource.url", "jdbc:postgresql://10.2.1.5/jbpm-db;MVCC=TRUE"));
+        pds.getDriverProperties().put("user", properties.getProperty("persistence.datasource.user", "jbpm"));
+        pds.getDriverProperties().put("password", properties.getProperty("persistence.datasource.password", "jbpm"));
+        pds.getDriverProperties().put("url", properties.getProperty("persistence.datasource.url", "jdbc:postgresql://10.2.1.115/jbpm-db;MVCC=TRUE"));
         pds.getDriverProperties().put("driverClassName", properties.getProperty("persistence.datasource.driverClassName", "org.postgresql.Driver"));
         pds.init();
         return pds;

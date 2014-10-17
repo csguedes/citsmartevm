@@ -495,5 +495,11 @@ public class DeploymentDescriptorImpl implements DeploymentDescriptor, Serializa
 		return DeploymentDescriptorIO.toXml(this);
 	}
 
+	@Override
+	public List<String> getRequiredRoles(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

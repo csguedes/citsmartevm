@@ -110,9 +110,9 @@ public abstract class JbpmJUnitTestCase extends AbstractBaseTest {
         pds.setClassName("bitronix.tm.resource.jdbc.lrc.LrcXADataSource");
         pds.setMaxPoolSize(5);
         pds.setAllowLocalTransactions(true);
-        pds.getDriverProperties().put("user", "sa");
-        pds.getDriverProperties().put("password", "");
-        pds.getDriverProperties().put("url", "jdbc:postgresql://10.2.1.5/jbpm-db;MVCC=true");
+        pds.getDriverProperties().put("user", "jbpm");
+        pds.getDriverProperties().put("password", "jbpm");
+        pds.getDriverProperties().put("url", "jdbc:postgresql://10.2.1.115/jbpm-db;MVCC=true");
         pds.getDriverProperties().put("driverClassName", "com.mysql.jdbc.Driver");
         pds.init();
         return pds;
